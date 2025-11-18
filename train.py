@@ -3,7 +3,7 @@ import joblib
 from sklearn.datasets import fetch_olivetti_faces
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-
+import os
 
 
 def load_and_split_data():
@@ -42,7 +42,7 @@ def train_model(X_train, y_train):
 
 def save_model(model, filename='models/savedmodel.pth'):
     print(f"\nSaving model to {filename}...")
-
+    os.makedirs('models', exist_ok=True)
     joblib.dump(model, filename)
     print("Model saved successfully!")
 
