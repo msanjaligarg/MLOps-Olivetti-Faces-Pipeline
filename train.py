@@ -41,7 +41,7 @@ def train_model(X_train, y_train):
     return model
 
 def save_model(model, filename='models/savedmodel.pth'):
-    print(f"\nSaving model to {filename}...")
+    print(f"\n Saving model to {filename}...")
     os.makedirs('models', exist_ok=True)
     joblib.dump(model, filename)
     print("Model saved successfully!")
