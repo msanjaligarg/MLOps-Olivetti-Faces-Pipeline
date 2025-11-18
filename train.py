@@ -40,7 +40,7 @@ def train_model(X_train, y_train):
 
     return model
 
-def save_model(model, filename='savedmodel.pth'):
+def save_model(model, filename='models/savedmodel.pth'):
     print(f"\nSaving model to {filename}...")
 
     joblib.dump(model, filename)
@@ -57,7 +57,7 @@ def main():
     save_model(model)
 
     # Save test data for later use
-    joblib.dump((X_test, y_test), 'test_data.pkl')
+    joblib.dump((X_test, y_test), 'models/test_data.pkl')
     print("Test data saved for evaluation")
 
     print("\nTraining completed successfully!")

@@ -2,13 +2,13 @@ import joblib
 from sklearn.metrics import accuracy_score
 import numpy as np
 
-def load_model(model_path='savedmodel.pth'):
+def load_model(model_path='models/savedmodel.pth'):
     print(f"Loading model from {model_path}...")
     model = joblib.load(model_path)
     print("Model loaded successfully!")
     return model
 
-def load_test_data(data_path='test_data.pkl'):
+def load_test_data(data_path='models/test_data.pkl'):
     print(f"Loading test data from {data_path}...")
     X_test, y_test = joblib.load(data_path)
     print(f"Test data loaded: {X_test.shape[0]} samples")
