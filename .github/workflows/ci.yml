@@ -1,0 +1,38 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - dev  # Trigger on pushes to dev branch
+
+jobs:
+ check_working_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Train Model
+      run: |
+        echo "=========================================="
+        echo "Training Decision Tree Classifier Model"
+        echo "=========================================="
+        python train.py
+
+    - name: Test Model
+      run: |
+        echo "=========================================="
+        echo "Testing Model"
+        echo "=========================================="
+        python test.py
+
