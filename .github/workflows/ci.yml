@@ -36,3 +36,10 @@ jobs:
         echo "=========================================="
         python test.py
 
+    - name: Upload model as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: trained-model
+        path: models/
+        retention-days: 7
+
