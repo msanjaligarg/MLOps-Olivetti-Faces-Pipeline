@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: olivetti-face-recognition
+  labels:
+    app: face-recognition
+spec:
+  replicas: 3  # Ensure 3 replicas are always running
+  selector:
+    matchLabels:
+      app: face-recognition
+  template:
+    metadata:
+      labels:
+        app: face-recognition
+    spec:
+      containers:
+      - name: face-recognition-container
+        image: msanjaligarg/olivetti-face-recognition:latest
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        env:
+        - name: FLASK_ENV
+          value: "production"
+        - name: PYTHONUNBUFFERED
+          value: "1"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: face-recognition-service
+  labels:
+    app: face-recognition
+spec:
+  type: LoadBalancer  # Use LoadBalancer for external access (or NodePort for local)
+  selector:
+    app: face-recognition
+  ports:
+  - protocol: TCP
+    port: 80          # External port
+    targetPort: 5000  # Container port
+    name: http
+  sessionAffinity: ClientIP
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: face-recognition-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: olivetti-face-recognition
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
