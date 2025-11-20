@@ -41,12 +41,19 @@ def train_model(X_train, y_train):
     return model
 
 def save_model(model, filename='savedmodel.pth'):
-    print(f"\n Saving model to {filename}...")
     os.makedirs('models', exist_ok=True)
     full_path = os.path.join('models', filename)
     joblib.dump(model, full_path)
-    print("Model saved successfully!")
+    print(f"Model saved successfully at path {full_path}!")
+    
+    # Verify the file was created
+    if os.path.exists(full_path):
+        file_size = os.path.getsize(full_path)
+        print(f"Model saved successfully! File size: {file_size} bytes")
+    else:
+        print(f"ERROR: Model file was not created at {full_path}")
 
+    return full_path
 
 def main():
     # Load and split data
