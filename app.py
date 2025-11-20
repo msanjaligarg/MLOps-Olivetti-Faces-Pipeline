@@ -9,7 +9,8 @@ app = Flask(__name__)
 
 # Load the trained model
 try:
-    model = joblib.load('savedmodel.pth')
+    model_path = 'models/savedmodel.pth'
+    model = joblib.load(model_path)
     print("Model loaded successfully!")
 except Exception as e:
     print(f"Error loading model: {e}")
