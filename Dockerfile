@@ -21,11 +21,13 @@ COPY train.py .
 COPY templates/ ./templates/
 
 # Train the model during build (or copy pre-trained model)
-# Option 1: Train during build
 RUN python train.py
 
-# Option 2: Copy pre-trained model (uncomment if you have savedmodel.pth)
-# COPY savedmodel.pth .
+# Create models directory and COPY the model file
+# You need to have the model file in your repository for this to work
+#RUN mkdir -p models
+#COPY models/savedmodel.pth ./models/
+
 
 # Expose Flask port
 EXPOSE 5000
